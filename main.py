@@ -1,19 +1,52 @@
 def main():
     user_text = input('Введите пароль: ')
-    password_length = len(user_text)
+    print(score_counter(user_text))
 
-    if password_length <= 12:
-        password_length = 'Короткий пароль'
-    else:
-        password_length = 'Длинный пароль'
 
-    found_digit = any(letter.isdigit() for letter in user_text)
-    if found_digit:
-        found_digit = 'Содержит цифры'
-    else:
-        found_digit = 'Не содержит цифры'
-    return '{0}\n{1}'.format(password_length, found_digit)
+def has_digit(user_text):
+    return any(letter.isdigit() for letter in user_text)
+
+
+def has_letters(user_text):
+    return any(letter.isalpha() for letter in user_text)
+
+
+def is_very_long(user_text):
+    minimal_password_length = 12
+    return len(user_text) > minimal_password_length
+
+
+def has_uppercase(user_text):
+    return any(letter.isupper() for letter in user_text)
+
+
+def has_lowercase(user_text):
+    return any(letter.islower() for letter in user_text)
+
+
+def has_symbols(user_text):
+    return any(
+        not letter.isalpha()
+        and not letter.isdigit()
+        for letter in user_text
+    )
+
+
+def score_counter(user_text):
+    checks = [
+        is_very_long,
+        has_digit,
+        has_letters,
+        has_lowercase,
+        has_uppercase,
+        has_symbols
+    ]
+    score = 0
+    for check in checks:
+        if check(user_text):
+            score += 2
+    return score
 
 
 if __name__ == "__main__":
-    print(main())
+    main()
